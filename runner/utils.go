@@ -23,6 +23,19 @@ func isTmpDir(path string) bool {
 	return absolutePath == absoluteTmpPath
 }
 
+func isIgnoredDir(path string) bool {
+	absolutePath, _ := filepath.Abs(path)
+
+	for _, dir := range strings.Split(settings["ignored_dirs"], ",") {
+		absoluteIgnoredDir, _ := filepath.Abs(dir)
+		if strings.HasPrefix(absolutePath, absoluteIgnoredDir) {
+			return true
+		}
+	}
+
+	return false
+}
+
 func isWatchedFile(path string) bool {
 	absolutePath, _ := filepath.Abs(path)
 	absoluteTmpPath, _ := filepath.Abs(tmpPath())
